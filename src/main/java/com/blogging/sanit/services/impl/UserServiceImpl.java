@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.blogging.sanit.entities.User;
 import com.blogging.sanit.exceptions.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import com.blogging.sanit.payloads.UserDto;
 import com.blogging.sanit.repositories.UserRepo;
 import com.blogging.sanit.services.UserService;
 
+@Service
 public class UserServiceImpl implements UserService {
 
 	@Autowired
