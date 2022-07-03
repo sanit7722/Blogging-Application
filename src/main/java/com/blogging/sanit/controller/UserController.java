@@ -1,5 +1,6 @@
 package com.blogging.sanit.controller;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import com.blogging.sanit.services.UserService;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -28,7 +31,7 @@ public class UserController {
 	//POST- Create User
 	
 	@PostMapping("/")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto createdUserDto=this.userService.createUser(userDto);
 		return new ResponseEntity<>(createdUserDto ,HttpStatus.CREATED);
 		
@@ -38,7 +41,7 @@ public class UserController {
 	//PUT- Update User
 	
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable Integer userId){
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable Integer userId){
 		UserDto updatedUser=this.userService.updateUser(userDto, userId);
 		return  ResponseEntity.ok(updatedUser);
 	}
