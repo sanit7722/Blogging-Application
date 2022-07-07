@@ -17,7 +17,7 @@ import com.blogging.sanit.entities.User;
 import com.blogging.sanit.exceptions.ResourceNotFoundException;
 
 import com.blogging.sanit.payloads.PostDto;
-
+import com.blogging.sanit.payloads.PostResponse;
 import com.blogging.sanit.repositories.CategoryRepo;
 import com.blogging.sanit.repositories.PostRepo;
 import com.blogging.sanit.repositories.UserRepo;
@@ -84,7 +84,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPosts(Integer pageNumber, Integer pageSize) {
+	public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
 		
 		
 		Pageable pageable= PageRequest.of(pageNumber, pageSize);
@@ -92,7 +92,15 @@ public class PostServiceImpl implements PostService {
 		List<Post> allPost=pagePost.getContent();
 		
 		List<PostDto> postsDto= allPost.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-		return postsDto;
+		
+		PostResponse postResponse=new PostResponse();
+		postResponse.setContent(postsDto);
+		postResponse.setPageNumber(pagePost.getNumber());
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLast(pagePost.isLast());
+		return postResponse;
 	}
 
 	@Override
@@ -106,7 +114,9 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getPostsByCategory(Integer categoryId) {
+	public List<PostDto> getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize) {
+		
+		
 		
 		Category category=this.categoryRepo.findById(categoryId)
 				.orElseThrow(()->new ResourceNotFoundException("Category ", "category id", categoryId));
@@ -116,12 +126,25 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getPostsByUser(Integer userId) {
+	public PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize) {
 		User user=this.userRepo.findById(userId)
 				.orElseThrow(()->new ResourceNotFoundException("User ", "User id", userId));
-		List<Post> posts= this.postRepo.findByUser(user);
-		List<PostDto> postsDto= posts.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-		return postsDto;
+		Pageable pageable=PageRequest.of(pageNumber, pageSize);
+		Page<Post> pagePost= this.postRepo.findByUserId(userId, pageable);
+		
+		List<Post> allPost=pagePost.getContent();
+		
+		//List<Post> posts= this.postRepo.findByUser(user);
+		List<PostDto> postsDto= allPost.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+		PostResponse postResponse=new PostResponse();
+		postResponse.setContent(postsDto);
+		postResponse.setPageNumber(pagePost.getNumber());
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLast(pagePost.isLast());
+		return postResponse;
+		
 	}
 
 	@Override

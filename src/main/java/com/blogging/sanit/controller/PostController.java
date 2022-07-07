@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blogging.sanit.payloads.ApiResponse;
 import com.blogging.sanit.payloads.PostDto;
+import com.blogging.sanit.payloads.PostResponse;
 import com.blogging.sanit.services.PostService;
 
 @RestController
@@ -42,31 +43,37 @@ public class PostController {
 	
 	//get by user
 	@GetMapping("/user/{userId}/posts")
-	public ResponseEntity<List<PostDto>> getPostByUser(@PathVariable Integer userId){
+	public ResponseEntity<PostResponse> getPostByUser(@PathVariable Integer userId,
+			@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize){
 		
-		List<PostDto> posts= this.postService.getPostsByUser(userId);
-		return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+		PostResponse posts=this.postService.getPostsByUser(userId, pageNumber, pageSize);
+		//List<PostDto> posts= this.postService.getPostsByUser(userId,pageNumber,pageSize);
+		return new ResponseEntity<PostResponse>(posts,HttpStatus.OK);
 	}
 	
 	
 	
 	//get by category
 	@GetMapping("/category/{categoryId}/posts")
-	public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable Integer categoryId){
+	public ResponseEntity<List<PostDto>> getPostByCategory(@PathVariable Integer categoryId,
+			@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
+			){
 		
-		List<PostDto> posts= this.postService.getPostsByCategory(categoryId);
+		List<PostDto> posts= this.postService.getPostsByCategory(categoryId,pageNumber,pageSize);
 		return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
 	}
 	
 	//get all post
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostDto>> getAllPost(
-			@RequestParam(value = "pageNumber", defaultValue = "1",required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize
+	public ResponseEntity<PostResponse> getAllPost(
+			@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
 			){
 		
-		List<PostDto> posts= this.postService.getAllPosts(pageNumber,pageSize);
-		return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+		PostResponse posts= this.postService.getAllPosts(pageNumber,pageSize);
+		return new ResponseEntity<PostResponse>(posts,HttpStatus.OK);
 	}
 	
 	
