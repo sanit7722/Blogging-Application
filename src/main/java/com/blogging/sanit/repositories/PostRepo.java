@@ -13,7 +13,9 @@ import com.blogging.sanit.entities.User;
 public interface PostRepo extends JpaRepository<Post, Integer>{
 
 	List<Post> findByUser(User user);
-	List<Post> findByCategory(Category category);
+	//List<Post> findByCategory(Category category);
 	Page<Post> findByUserId(Integer userId, Pageable pageable );
+	Page<Post> findByCategory(Integer categoryId, Pageable pageable );
+	
 	
 }

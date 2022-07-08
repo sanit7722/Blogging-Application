@@ -21,7 +21,7 @@ public interface PostService {
 	void deletePost(Integer postId);
 	
 	//get All post
-	PostResponse getAllPosts(Integer pageNumber, Integer pageSize);
+	PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortByType);
 	
 	
 	//get post by id
@@ -29,7 +29,7 @@ public interface PostService {
 	
 	
 	//get all post by category
-	List<PostDto> getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize);
+	PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize);
 	
 	
 	// get all posts by user

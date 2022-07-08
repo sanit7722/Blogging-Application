@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.blogging.sanit.entities.Category;
@@ -22,6 +23,10 @@ import com.blogging.sanit.repositories.CategoryRepo;
 import com.blogging.sanit.repositories.PostRepo;
 import com.blogging.sanit.repositories.UserRepo;
 import com.blogging.sanit.services.PostService;
+
+
+
+
 
 
 @Service
@@ -84,10 +89,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponse getAllPosts(Integer pageNumber, Integer pageSize) {
+	public PostResponse getAllPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortByType) {
 		
+		Sort sort=null;
+		if(sortByType.equalsIgnoreCase("asc"))
+			sort=Sort.by(sortBy).ascending();
+		else
+			sort=Sort.by(sortBy).descending();
 		
-		Pageable pageable= PageRequest.of(pageNumber, pageSize);
+		Pageable pageable= PageRequest.of(pageNumber, pageSize, sort );
 		Page<Post> pagePost=this.postRepo.findAll(pageable);
 		List<Post> allPost=pagePost.getContent();
 		
@@ -114,15 +124,35 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize) {
+	public PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize) {
 		
 		
 		
-		Category category=this.categoryRepo.findById(categoryId)
-				.orElseThrow(()->new ResourceNotFoundException("Category ", "category id", categoryId));
-		List<Post> posts= this.postRepo.findByCategory(category);
-		List<PostDto> postsDto= posts.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
-		return postsDto;
+		
+		Pageable pageable=PageRequest.of(pageNumber, pageSize);
+		Page<Post> pagePost= this.postRepo.findByCategory(categoryId, pageable);
+		
+		List<Post> allPost=pagePost.getContent();
+		
+		//List<Post> posts= this.postRepo.findByUser(user);
+		List<PostDto> postsDto= allPost.stream().map((post)-> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+		PostResponse postResponse=new PostResponse();
+		postResponse.setContent(postsDto);
+		postResponse.setPageNumber(pagePost.getNumber());
+		postResponse.setPageSize(pagePost.getSize());
+		postResponse.setTotalElements(pagePost.getTotalElements());
+		postResponse.setTotalPages(pagePost.getTotalPages());
+		postResponse.setLast(pagePost.isLast());
+		return postResponse;
+		
+		
+		/*
+		 * Category category=this.categoryRepo.findById(categoryId) .orElseThrow(()->new
+		 * ResourceNotFoundException("Category ", "category id", categoryId));
+		 * List<Post> posts= this.postRepo.findByCategory(category); List<PostDto>
+		 * postsDto= posts.stream().map((post)-> this.modelMapper.map(post,
+		 * PostDto.class)).collect(Collectors.toList()); return postsDto;
+		 */
 	}
 
 	@Override
