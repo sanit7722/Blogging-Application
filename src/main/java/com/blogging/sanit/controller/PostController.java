@@ -45,9 +45,12 @@ public class PostController {
 	@GetMapping("/user/{userId}/posts")
 	public ResponseEntity<PostResponse> getPostByUser(@PathVariable Integer userId,
 			@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize){
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortByType", defaultValue = "asc", required = false) String sortByType
+			){
 		
-		PostResponse posts=this.postService.getPostsByUser(userId, pageNumber, pageSize);
+		PostResponse posts=this.postService.getPostsByUser(userId, pageNumber, pageSize,sortBy,sortByType);
 		//List<PostDto> posts= this.postService.getPostsByUser(userId,pageNumber,pageSize);
 		return new ResponseEntity<PostResponse>(posts,HttpStatus.OK);
 	}
@@ -58,10 +61,12 @@ public class PostController {
 	@GetMapping("/category/{categoryId}/posts")
 	public ResponseEntity<PostResponse> getPostByCategory(@PathVariable Integer categoryId,
 			@RequestParam(value = "pageNumber", defaultValue = "0",required = false) Integer pageNumber,
-			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize
+			@RequestParam(value = "pageSize", defaultValue = "10", required = false) Integer pageSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortByType", defaultValue = "asc", required = false) String sortByType
 			){
 		
-		PostResponse posts=this.postService.getPostsByCategory(categoryId, pageNumber, pageSize);
+		PostResponse posts=this.postService.getPostsByCategory(categoryId, pageNumber, pageSize,sortBy,sortByType);
 		return new ResponseEntity<PostResponse>(posts,HttpStatus.OK);
 	}
 	
@@ -103,6 +108,13 @@ public class PostController {
 		PostDto updatdPost= this.postService.updatePost(postDto, postId);
 		
 		return new ResponseEntity<PostDto>(updatdPost,HttpStatus.OK);
+	}
+	
+	//search
+	@GetMapping("/posts/search/{keywords}")
+	public ResponseEntity<List<PostDto>> searchPostByTitle(@PathVariable String keywords){
+		List<PostDto> results= this.postService.searchPosts(keywords);
+		return new ResponseEntity<List<PostDto>>(results, HttpStatus.OK);
 	}
 	
 	

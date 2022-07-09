@@ -29,11 +29,11 @@ public interface PostService {
 	
 	
 	//get all post by category
-	PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize);
+	PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize, String sortBy, String sortByType);
 	
 	
 	// get all posts by user
-	PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize);
+	PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize, String sortBy, String sortByType);
 	
 	
 	//search posts

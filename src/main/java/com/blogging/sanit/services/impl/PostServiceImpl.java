@@ -24,6 +24,8 @@ import com.blogging.sanit.repositories.PostRepo;
 import com.blogging.sanit.repositories.UserRepo;
 import com.blogging.sanit.services.PostService;
 
+import net.bytebuddy.asm.Advice.This;
+
 
 
 
@@ -97,7 +99,7 @@ public class PostServiceImpl implements PostService {
 		else
 			sort=Sort.by(sortBy).descending();
 		
-		Pageable pageable= PageRequest.of(pageNumber, pageSize, sort );
+		Pageable pageable= PageRequest.of(pageNumber, pageSize );
 		Page<Post> pagePost=this.postRepo.findAll(pageable);
 		List<Post> allPost=pagePost.getContent();
 		
@@ -124,13 +126,16 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize) {
+	public PostResponse getPostsByCategory(Integer categoryId,Integer pageNumber, Integer pageSize, String sortBy, String sortByType) {
 		
 		
-		
-		
+		Sort sort=null;
+		if(sortByType.equalsIgnoreCase("asc"))
+			sort=Sort.by(sortBy).ascending();
+		else
+			sort=Sort.by(sortBy).descending();
 		Pageable pageable=PageRequest.of(pageNumber, pageSize);
-		Page<Post> pagePost= this.postRepo.findByCategory(categoryId, pageable);
+		Page<Post> pagePost= this.postRepo.searchByCategoryId(categoryId, pageable);
 		
 		List<Post> allPost=pagePost.getContent();
 		
@@ -156,10 +161,16 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize) {
+	public PostResponse getPostsByUser(Integer userId,Integer pageNumber, Integer pageSize, String sortBy, String sortByType) {
 		User user=this.userRepo.findById(userId)
 				.orElseThrow(()->new ResourceNotFoundException("User ", "User id", userId));
-		Pageable pageable=PageRequest.of(pageNumber, pageSize);
+		
+		Sort sort=null;
+		if(sortByType.equalsIgnoreCase("asc"))
+			sort=Sort.by(sortBy).ascending();
+		else
+			sort=Sort.by(sortBy).descending();
+		Pageable pageable=PageRequest.of(pageNumber, pageSize,sort);
 		Page<Post> pagePost= this.postRepo.findByUserId(userId, pageable);
 		
 		List<Post> allPost=pagePost.getContent();
@@ -179,8 +190,10 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<PostDto> searchPosts(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Post> posts= this.postRepo.findByTitleContaining(keyword);
+		List<PostDto> postDtos= posts.stream().map((post)->this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+		return postDtos;
 	}
 
 }
