@@ -99,7 +99,7 @@ public class PostServiceImpl implements PostService {
 		else
 			sort=Sort.by(sortBy).descending();
 		
-		Pageable pageable= PageRequest.of(pageNumber, pageSize );
+		Pageable pageable= PageRequest.of(pageNumber, pageSize,sort );
 		Page<Post> pagePost=this.postRepo.findAll(pageable);
 		List<Post> allPost=pagePost.getContent();
 		
