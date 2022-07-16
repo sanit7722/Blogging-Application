@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenHelper {
@@ -45,6 +46,12 @@ public class JwtTokenHelper {
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object>claims=new HashMap<>();
 		return doGeneratedToken(claims, userDetails.getUsername());
+	}
+	private String doGeneratedToken(Map<String, Object> claims, String subject) {
+		
+		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis()+JWT_TOKEN_VALIDITY*100))
+				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username=getUsernameFromToken(token);
