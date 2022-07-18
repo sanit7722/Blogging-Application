@@ -1,9 +1,14 @@
 package com.blogging.sanit.payloads;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
+
+import com.blogging.sanit.entities.Role;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +35,6 @@ public class UserDto {
 	
 	@NotBlank
 	private String about;
+	
+	private Set<RoleDto> roles=new HashSet<>();
 }

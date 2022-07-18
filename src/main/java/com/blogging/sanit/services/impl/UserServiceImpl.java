@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blogging.sanit.config.AppConstants;
+import com.blogging.sanit.entities.Role;
 import com.blogging.sanit.entities.User;
 import com.blogging.sanit.exceptions.ResourceNotFoundException;
 import com.blogging.sanit.payloads.UserDto;
+import com.blogging.sanit.repositories.RoleRepo;
 import com.blogging.sanit.repositories.UserRepo;
 import com.blogging.sanit.services.UserService;
 
@@ -21,6 +25,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepo roleRepo;
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -95,6 +105,22 @@ private UserDto userToDto(User user) {
 
 		return userdto;
 	}
+
+@Override
+public UserDto registerNewUser(UserDto userDto) {
+	User user = this.modelMapper.map(userDto, User.class);
+	
+	//encode password
+	user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+	
+	
+	//roles
+	Role role = this.roleRepo.findById(AppConstants.NORMAL_USER).get();
+	user.getRoles().add(role);
+	User savedUser = this.userRepo.save(user);
+	
+	return this.modelMapper.map(savedUser, UserDto.class);
+}
 
 
 }
