@@ -1,6 +1,6 @@
 package com.blogging.sanit.payloads;
 
-import com.blogging.sanit.entities.Post;
+
 
 import lombok.Getter;
 import lombok.Setter;

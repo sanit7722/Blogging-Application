@@ -8,7 +8,7 @@ import com.blogging.sanit.entities.Comment;
 import com.blogging.sanit.entities.Post;
 import com.blogging.sanit.exceptions.ResourceNotFoundException;
 import com.blogging.sanit.payloads.CommentDto;
-import com.blogging.sanit.payloads.PostDto;
+
 import com.blogging.sanit.repositories.CommentsRepo;
 import com.blogging.sanit.repositories.PostRepo;
 import com.blogging.sanit.services.CommentService;

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
 
-import com.blogging.sanit.entities.Comment;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

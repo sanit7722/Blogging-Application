@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
 
-import com.blogging.sanit.entities.Role;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

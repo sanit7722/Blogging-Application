@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.blogging.sanit.entities.Category;
+
 import com.blogging.sanit.entities.Post;
 import com.blogging.sanit.entities.User;
 
