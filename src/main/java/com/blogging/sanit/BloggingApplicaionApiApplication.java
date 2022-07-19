@@ -52,9 +52,9 @@ public class BloggingApplicaionApiApplication implements CommandLineRunner{
 			List<Role> roles = List.of(roleAdmin,roleNormal);
 			List<Role> result = this.roleRepo.saveAll(roles);
 			
-			result.forEach(role->{
-				System.out.println(role.getName());
-			});
+			/*
+			 * result.forEach(role->{ System.out.println(role.getName()); });
+			 */
 			
 		} catch (Exception e) {
 			e.printStackTrace();
