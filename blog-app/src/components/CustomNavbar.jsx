@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 
 const CustomNavbar =()=>{
+  const [isOpen, setIsOpen] = useState(false);
     return(
             <div>
               <Navbar 
@@ -25,8 +26,8 @@ const CustomNavbar =()=>{
                 fixed=""
               >
                 <NavbarBrand tag={ReactLink} to="/">Blog app</NavbarBrand>
-                
-                <Collapse navbar>
+                <NavbarToggler onClick={()=>setIsOpen(!isOpen)} />
+                <Collapse isOpen={isOpen} navbar>
                   <Nav className="me-auto" navbar>
                     <NavItem>
                       <NavLink tag={ReactLink} to="/login">Login</NavLink>
