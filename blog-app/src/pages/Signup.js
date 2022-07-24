@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import Base from "../components/Base";
+import { signUp } from "../Services/user-service";
 
 const Signup = () => {
 
@@ -34,6 +35,14 @@ const Signup = () => {
     const submitForm=(event)=>{
 
         event.preventDefault()
+        signUp(data).then((resp)=>{
+            console.log(resp);
+            console.log("success log")
+
+        }).catch((error)=>{
+            console.log(error)
+            console.log("error log")
+        })
     }
 
   return (
