@@ -1,6 +1,7 @@
 package com.blogging.sanit.config;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 	
 	@Bean
-	public FilterRegistrationBean corsFilter() {
+	public FilterRegistrationBean coreFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowCredentials(true);
@@ -97,17 +97,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		corsConfiguration.addAllowedHeader("Authorization");
 		corsConfiguration.addAllowedHeader("Content-Type");
 		corsConfiguration.addAllowedHeader("Accept");
-		corsConfiguration.addAllowedHeader("POST");
-		corsConfiguration.addAllowedHeader("GET");
-		corsConfiguration.addAllowedHeader("DELETE");
-		corsConfiguration.addAllowedHeader("PUT");
-		corsConfiguration.addAllowedHeader("OPTIONS");
+		corsConfiguration.addAllowedMethod("POST");
+		corsConfiguration.addAllowedMethod("GET");
+		corsConfiguration.addAllowedMethod("DELETE");
+		corsConfiguration.addAllowedMethod("PUT");
+		corsConfiguration.addAllowedMethod("OPTIONS");
 		corsConfiguration.setMaxAge(3600L);
 		
-		source.registerCorsConfiguration("/**", corsConfiguration);
-		FilterRegistrationBean bean= new FilterRegistrationBean(new CorsFilter (source));
-		return bean;
 		
+		source.registerCorsConfiguration("/**", corsConfiguration);
+		FilterRegistrationBean bean=new FilterRegistrationBean(new CorsFilter(source));
+		
+		return bean;
 	}
+	
+	
 
 }
