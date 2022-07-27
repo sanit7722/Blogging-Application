@@ -1,5 +1,7 @@
 package com.blogging.sanit.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +73,7 @@ public class AuthController {
 	//register new user API
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto){
 		UserDto registerNewUser = this.userService.registerNewUser(userDto);
 		return new ResponseEntity<UserDto>(registerNewUser,HttpStatus.CREATED);
 		

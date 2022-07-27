@@ -26,6 +26,7 @@ public class UserDto {
 	@Size(min=3, message="Username should contails at least 3 characters")
 	private String name;
 	
+	@NotBlank
 	@Email(message="Email address is not valid")
 	private String email;
 	
