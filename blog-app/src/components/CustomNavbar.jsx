@@ -35,6 +35,9 @@ const CustomNavbar =()=>{
                     <NavItem>
                       <NavLink tag={ReactLink} to="/signup">Sign Up</NavLink>
                     </NavItem>
+                    <NavItem>
+                      <NavLink tag={ReactLink} to="/newsignup">New Sign Up</NavLink>
+                    </NavItem>
                     <UncontrolledDropdown nav inNavbar>
                       <DropdownToggle nav caret>
                         More
