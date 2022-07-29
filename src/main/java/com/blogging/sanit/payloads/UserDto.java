@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,4 +38,9 @@ public class UserDto {
 	private String about;
 	
 	private Set<RoleDto> roles=new HashSet<>();
+	
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}
 }

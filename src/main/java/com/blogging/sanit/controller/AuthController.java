@@ -2,6 +2,7 @@ package com.blogging.sanit.controller;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogging.sanit.entities.User;
 import com.blogging.sanit.exceptions.ApiException;
 import com.blogging.sanit.payloads.JwtAuthRequest;
 import com.blogging.sanit.payloads.JwtAuthResponse;
@@ -39,6 +41,9 @@ public class AuthController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private ModelMapper mapper;
+	
 	@PostMapping("/login")
 	public ResponseEntity<JwtAuthResponse> createToken(
 			@RequestBody JwtAuthRequest request
@@ -51,6 +56,7 @@ public class AuthController {
 		
 		JwtAuthResponse response=new JwtAuthResponse();
 		response.setToken(token);
+		response.setUser(this.mapper.map((User)userDetails, UserDto.class));
 		return new ResponseEntity<JwtAuthResponse>(response,HttpStatus.OK);
 		
 	}

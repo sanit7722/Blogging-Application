@@ -4,6 +4,8 @@ import Base from "../components/Base";
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import { loginUser } from "../Services/user-service";
+import { doLogin } from "../auth";
+import { data } from "autoprefixer";
 
 const Login = () => {
 
@@ -27,9 +29,16 @@ const Login = () => {
       toast.error("Username and Password is required");
       return;
     }
+
+
     loginUser(loginDetails).then((jwtTokenData)=>{
       console.log("login")
       console.log(jwtTokenData.token)
+
+      doLogin(data,()=>{
+        console.log("login details saved");
+      })
+
     }).catch(error=>{
       console.log(error)
 
