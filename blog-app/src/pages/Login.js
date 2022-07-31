@@ -37,6 +37,7 @@ const Login = () => {
 
       doLogin(data,()=>{
         console.log("login details saved");
+        
       })
 
     }).catch(error=>{
