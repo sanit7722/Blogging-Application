@@ -20,8 +20,6 @@ This app is mainly categorised into three major sections:
   - **Website Page:** Any anonymous user can see our website. He/She has access to view all posts and about-us, contact-us page.
   - **Login/Register**: Users can also Register to Website, Login into the website. 
 
-## Video Demo (Time: 2 minute)
-Coming soon
 
 ## Features
 * Different User Profiles/Roles: ADMIN, NORMAL.
@@ -53,8 +51,6 @@ Coming soon
 
 ![Capture](https://user-images.githubusercontent.com/42400759/181925420-c9c45ee8-f3f4-4d11-926b-2cf0f5e9bc57.JPG)
 
-## Visit our Website
-Comming soon
 
 ## Contributing
 1. Fork it (<https://github.com/sanit7722/Blogging-Application/fork>)
